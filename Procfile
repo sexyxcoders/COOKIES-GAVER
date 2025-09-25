@@ -1,1 +1,1 @@
-worker: python -m cookies
+worker: python -m cookies.main
