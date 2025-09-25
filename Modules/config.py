@@ -12,7 +12,10 @@ BOT_TOKEN = getenv("BOT_TOKEN", "YOUR_BOT_TOKEN")
 
 # ===== Bot Settings =====
 BANNED_USERS = filters.user()
-START_IMG_URL = getenv("START_IMG_URL", "")
-SUPPORT_CHAT = getenv("SUPPORT_CHAT", "")
-MUST_JOIN = getenv("MUST_JOIN", "")  # Required channel/group
-LOG_CHANNEL = int(getenv("LOG_CHANNEL", ""))
+START_IMG_URL = getenv("START_IMG_URL", "https://files.catbox.moe/i5ngz3.jpg")
+SUPPORT_CHAT = getenv("SUPPORT_CHAT", "https://t.me/your_support_chat")
+MUST_JOIN = getenv("MUST_JOIN", "https://t.me/YourChannel")  # Required channel/group
+LOG_CHANNEL = int(getenv("LOG_CHANNEL", "-1000000000"))
+
+# ===== Cookies =====
+COOKIES_FILE = os.path.join(os.path.dirname(__file__), "cookies", "default_cookies.txt")
