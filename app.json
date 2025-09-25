@@ -1,0 +1,20 @@
+{
+  "name": "YouTubeCookiesBot",
+  "description": "A Telegram bot to generate and send YouTube cookies.txt files",
+  "keywords": ["telegram", "bot", "youtube", "cookies"],
+  "website": "https://github.com/Nobi-123/YouTubeCookiesBot",
+  "repository": "https://github.com/Nobi-123/YouTubeCookiesBot",
+  "env": {
+    "API_ID": {"description": "Telegram API ID", "required": true},
+    "API_HASH": {"description": "Telegram API HASH", "required": true},
+    "BOT_TOKEN": {"description": "Bot token from BotFather", "required": true},
+    "MONGO_DB_URI": {"description": "MongoDB connection string", "required": true},
+    "OWNER_ID": {"description": "Your Telegram ID", "required": true},
+    "MUST_JOIN": {"description": "Telegram channel users must join", "required": true}
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ]
+}
