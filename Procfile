@@ -1,1 +1,1 @@
-worker: python -m TNCxCookies
+worker: python __main__.py
