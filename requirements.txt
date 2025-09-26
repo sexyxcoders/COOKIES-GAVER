@@ -8,19 +8,13 @@ hachoir
 heroku3
 httpx==0.27.2
 motor==3.3.1
-numpy==1.26.4
-opencv-python==4.10.0.84
+pymongo==4.8.0           # Compatible with Motor
 pillow==10.4.0
 psutil
 tgcrypto
 # Use only ONE Pyrogram source (keep the fork OR PyPI version)
-# If you want KurimuzonAkuma's fork:
-https://github.com/KurimuzonAkuma/pyrogram/archive/v2.1.23.zip
-# Or if official Pyrogram is enough, just use:
-# pyrogram==2.0.106
-
+# https://github.com/KurimuzonAkuma/pyrogram/archive/v2.1.23.zip
 py-tgcalls==2.2.0
-pykeyboard
 python-dotenv
 pyyaml
 requests
