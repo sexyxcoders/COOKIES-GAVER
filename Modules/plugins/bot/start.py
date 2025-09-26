@@ -7,7 +7,7 @@ Handles /start and /getcookie commands for YouTubeCookiesBot
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from Modules.config import BOT_TOKEN, REQUIRED_CHANNEL
-from Modules.utils.cookies_gen import generate_cookie
+from Modules.utils.cookies_gen import generate_dynamic_cookie
 
 # Create Pyrogram client
 app = Client("YouTubeCookiesBot", bot_token=BOT_TOKEN)
@@ -61,7 +61,7 @@ async def send_cookie(client, callback_query):
     username = user.username or "NoUsername"
 
     # Generate cookie (currently default)
-    cookie = generate_cookie(user_id)
+    cookie = generate_dynamic_cookie(user_id)
 
     # Send cookie to user
     await callback_query.message.reply_text(
