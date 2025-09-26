@@ -1,1 +1,1 @@
-worker: python -m cookies
+worker: python -m TNCxCookies._main_
