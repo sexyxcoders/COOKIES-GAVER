@@ -1,5 +1,7 @@
-# utils/__init__.py
+"""
+TNCxCookies/utils/__init__.py
+-----------------------------
+Marks the utils folder as a Python package.
+"""
 
-# This file is intentionally left blank to treat 'utils' as a package.
-# Modules like database.py, helpers.py, decorators.py, and inline.py
-# can now be imported from this package.
+# You can leave this file empty or add package-level imports if needed
