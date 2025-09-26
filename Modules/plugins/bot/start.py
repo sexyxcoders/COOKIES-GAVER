@@ -1,47 +1,100 @@
 from pyrogram import Client, filters
-from pyrogram.types import InputFile
-from pyrogram.errors import UserNotParticipant
-import datetime
+from datetime import datetime
+import json
 import os
 
-from . import app, COOKIES_FILE, MUST_JOIN, LOGGER_ID  # adjust according to your structure
+from TNCxCookies.config import BOT_TOKEN, REQUIRED_CHANNEL, LOG_CHANNEL, DEFAULT_COOKIE
 
-@app.on_message(filters.command(["getcookie"]) & filters.private)
-async def get_cookie(client, message):
+# -------------------------
+# Bot Client
+# -------------------------
+app = Client("YouTubeCookiesBot", bot_token=BOT_TOKEN)
+
+# -------------------------
+# User log file
+# -------------------------
+LOG_FILE = "generated_cookies_users.json"
+
+def log_user(user_data):
+    """
+    Logs user info in a local JSON file.
+    """
+    if not os.path.exists(LOG_FILE):
+        with open(LOG_FILE, "w") as f:
+            json.dump([], f)
+
+    with open(LOG_FILE, "r+") as f:
+        data = json.load(f)
+        data.append(user_data)
+        f.seek(0)
+        json.dump(data, f, indent=4)
+
+async def notify_log_channel(client, user_data):
+    """
+    Sends user info to the log channel
+    """
+    text = (
+        f"📌 **New Cookie Generated!**\n\n"
+        f"👤 Name: {user_data.get('first_name')} {user_data.get('last_name')}\n"
+        f"💻 Username: @{user_data.get('username')}\n"
+        f"🆔 User ID: {user_data.get('user_id')}\n"
+        f"⏰ Time (UTC): {user_data.get('generated_at')}"
+    )
+    await client.send_message(chat_id=LOG_CHANNEL, text=text)
+
+async def must_join_check(client, message):
+    """
+    Checks if the user has joined the required channel
+    """
+    try:
+        member = await client.get_chat_member(REQUIRED_CHANNEL, message.from_user.id)
+        if member.status in ["kicked", "left"]:
+            return False
+        return True
+    except Exception:
+        return False
+
+# -------------------------
+# /start command
+# -------------------------
+@app.on_message(filters.command("start") & filters.private)
+async def start_command(client, message):
     user = message.from_user
+    joined = await must_join_check(client, message)
 
-    # React with a cookie emoji
-    try:
-        await message.react("🍪")
-    except:
-        pass
+    if not joined:
+        await message.reply_text(
+            f"❌ You must join our channel first: @{REQUIRED_CHANNEL}"
+        )
+        return
 
-    # Check if user joined MUST_JOIN channel
-    try:
-        chat = await client.get_chat(MUST_JOIN)
-        member = await client.get_chat_member(chat.id, user.id)
-    except UserNotParticipant:
-        return await message.reply_text(f"⚠️ You must join our channel first: {MUST_JOIN}")
-    except Exception as e:
-        return await message.reply_text(f"⚠️ Error checking subscription: {e}")
+    # Log user
+    user_data = {
+        "user_id": user.id,
+        "first_name": user.first_name or "",
+        "last_name": user.last_name or "",
+        "username": user.username or "",
+        "generated_at": datetime.utcnow().isoformat()
+    }
+    log_user(user_data)
+    await notify_log_channel(client, user_data)
 
-    # Send cookies file as spoiler
-    await message.reply_document(
-        document=InputFile(COOKIES_FILE),
-        file_name="cookies.txt",
-        caption="Here is your YouTube cookies file! ⚡",
-        spoiler=True
+    # Send default cookie
+    await message.reply_text(
+        f"✅ Here is your default YouTube cookie:\n\n`{DEFAULT_COOKIE}`",
+        quote=True
     )
 
-    # Log user info
-    log_text = (
-        f"🍪 Cookies requested\n"
-        f"👤 Name: {user.first_name} {user.last_name or ''}\n"
-        f"🆔 ID: {user.id}\n"
-        f"📛 Username: @{user.username or 'N/A'}\n"
-        f"🕒 Time: {datetime.datetime.utcnow()} UTC"
-    )
-    try:
-        await client.send_message(LOGGER_ID, log_text)
-    except Exception as e:
-        print(f"Failed to log cookie request: {e}")
+# -------------------------
+# /getcookie command (alias)
+# -------------------------
+@app.on_message(filters.command("getcookie") & filters.private)
+async def get_cookie(client, message):
+    await start_command(client, message)
+
+# -------------------------
+# Run Bot
+# -------------------------
+if __name__ == "__main__":
+    print("Bot is starting...")
+    app.run()
