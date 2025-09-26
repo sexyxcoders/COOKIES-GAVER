@@ -6,7 +6,7 @@ Handles /start and /getcookie commands for YouTubeCookiesBot
 
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-from v.config import BOT_TOKEN, REQUIRED_CHANNEL
+from Modules.config import BOT_TOKEN, REQUIRED_CHANNEL
 from Modules.utils.cookies_gen import generate_cookie
 
 # Create Pyrogram client
