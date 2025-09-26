@@ -6,7 +6,7 @@ Utility functions for YouTubeCookiesBot.
 
 import random
 import string
-from TNCxCookies.utils.database import add_user, add_cookie
+from Modules.utils.database import add_user, add_cookie
 
 async def save_user_and_cookie(user_id: int, username: str, cookie: str):
     """
