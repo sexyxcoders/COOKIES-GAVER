@@ -6,8 +6,8 @@ Initializes the bot and sets up commands.
 """
 
 from pyrogram import Client, filters
-from TNCxCookies.utils.default_cookies import get_default_cookie
-from TNCxCookies.plugins.bot import start  # import start plugin commands
+from Modules.utils.default_cookies import get_default_cookie
+from Modules.plugins.bot import start  # import start plugin commands
 
 import os
 
