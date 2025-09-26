@@ -1,20 +1,48 @@
 {
   "name": "YouTubeCookiesBot",
-  "description": "A Telegram bot to generate and send YouTube cookies.txt files",
-  "keywords": ["telegram", "bot", "youtube", "cookies"],
-  "website": "https://github.com/Nobi-123/YouTubeCookiesBot",
-  "repository": "https://github.com/Nobi-123/YouTubeCookiesBot",
-  "env": {
-    "API_ID": {"description": "Telegram API ID", "required": true},
-    "API_HASH": {"description": "Telegram API HASH", "required": true},
-    "BOT_TOKEN": {"description": "Bot token from BotFather", "required": true},
-    "MONGO_DB_URI": {"description": "MongoDB connection string", "required": true},
-    "OWNER_ID": {"description": "Your Telegram ID", "required": true},
-    "MUST_JOIN": {"description": "Telegram channel users must join", "required": true}
-  },
+  "description": "A Telegram bot that generates YouTube cookies dynamically.",
+  "repository": "https://github.com/YourUsername/YouTubeCookiesBot",
+  "logo": "https://raw.githubusercontent.com/YourUsername/YouTubeCookiesBot/main/logo.png",
+  "keywords": ["telegram", "bot", "youtube", "cookies", "pyrogram"],
   "buildpacks": [
     {
       "url": "heroku/python"
     }
-  ]
+  ],
+  "env": {
+    "API_ID": {
+      "description": "Your Telegram API ID",
+      "value": "123456"
+    },
+    "API_HASH": {
+      "description": "Your Telegram API Hash",
+      "value": "your_api_hash"
+    },
+    "BOT_TOKEN": {
+      "description": "Your Telegram Bot Token",
+      "value": "your_bot_token"
+    },
+    "TIMEZONE": {
+      "description": "Default timezone",
+      "value": "Asia/Kolkata"
+    },
+    "DEBUG": {
+      "description": "Enable debug mode",
+      "value": "True"
+    },
+    "REQUIRED_CHANNEL": {
+      "description": "Users must join this channel",
+      "value": "YourChannelUsername"
+    },
+    "LOG_CHANNEL": {
+      "description": "Channel ID for bot logs",
+      "value": "-1001234567890"
+    }
+  },
+  "formation": {
+    "worker": {
+      "quantity": 1,
+      "size": "standard-1X"
+    }
+  }
 }
