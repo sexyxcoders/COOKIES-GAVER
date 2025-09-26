@@ -1,21 +1,42 @@
-import os
-from os import getenv
-from dotenv import load_dotenv
-from pyrogram import filters
+# TNCxCookies/config.py
 
+"""
+Configuration for YouTubeCookiesBot
+-----------------------------------
+Loads bot settings from environment variables or default values.
+"""
+
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
 load_dotenv()
 
-# ===== Core Telegram Bot Credentials =====
-API_ID = int(getenv("API_ID", ""))
-API_HASH = getenv("API_HASH", "")
-BOT_TOKEN = getenv("BOT_TOKEN", "")
+# -------------------------
+# Telegram API Settings
+# -------------------------
+API_ID = int(os.getenv("API_ID", "123456"))           # Replace with your API ID
+API_HASH = os.getenv("API_HASH", "your_api_hash")    # Replace with your API HASH
+BOT_TOKEN = os.getenv("BOT_TOKEN", "your_bot_token") # Replace with your bot token
 
-# ===== Bot Settings =====
-BANNED_USERS = filters.user()
-START_IMG_URL = getenv("START_IMG_URL", "https://files.catbox.moe/i5ngz3.jpg")
-SUPPORT_CHAT = getenv("SUPPORT_CHAT", "https://t.me/your_support_chat")
-MUST_JOIN = getenv("MUST_JOIN", "https://t.me/TNCnetwork")  # Required channel/group
-LOG_CHANNEL = int(getenv("LOG_CHANNEL", "-1003065367480"))
+# -------------------------
+# Default Settings
+# -------------------------
+DEFAULT_TIMEZONE = os.getenv("TIMEZONE", "Asia/Kolkata")
 
-# ===== Cookies =====
-COOKIES_FILE = os.path.join(os.path.dirname(__file__), "cookies", "default_cookies.txt")
+# -------------------------
+# Misc Settings
+# -------------------------
+DEBUG = os.getenv("DEBUG", "True").lower() in ("true", "1", "yes")
+
+# -------------------------
+# Must Join Channel
+# -------------------------
+# Users must join this channel to use the bot
+REQUIRED_CHANNEL = os.getenv("REQUIRED_CHANNEL", "YourChannelUsername")
+
+# -------------------------
+# Default YouTube Cookie
+# -------------------------
+from TNCxCookies.utils.default_cookies import get_default_cookie
+DEFAULT_COOKIE = get_default_cookie()
