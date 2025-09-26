@@ -1,7 +1,7 @@
 {
-  "name": "YouTubeCookiesBot",
+  "name": "TNCxCookies",
   "description": "A Telegram bot that generates YouTube cookies dynamically.",
-  "repository": "https://github.com/YourUsername/YouTubeCookiesBot",
+  "repository": "https://github.com/sexyxcoders/COOKIES-GAVER",
   "logo": "https://raw.githubusercontent.com/YourUsername/YouTubeCookiesBot/main/logo.png",
   "keywords": ["telegram", "bot", "youtube", "cookies", "pyrogram"],
   "buildpacks": [
