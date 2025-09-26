@@ -1,10 +1,11 @@
+# cookies/__init__.py
 from pyrogram import Client
-import config
+from .config import BOT_TOKEN, API_ID, API_HASH
 
-# Initialize Pyrogram bot client
+# Initialize the bot client
 app = Client(
-    "YouTubeCookiesBot",
-    api_id=config.API_ID,
-    api_hash=config.API_HASH,
-    bot_token=config.BOT_TOKEN
+    "cookies_bot",
+    api_id=API_ID,
+    api_hash=API_HASH,
+    bot_token=BOT_TOKEN,
 )
