@@ -1,54 +1,28 @@
-# utils/inline.py
+"""
+inline.py
+---------
+Inline keyboard helper functions.
+"""
 
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-from cookies import config, helpers
 
-
-# ===============================
-# Private panel
-# ===============================
-
-def private_panel(strings: dict) -> list:
+def must_join_keyboard(channel_username: str):
     """
-    Return a list of buttons for private chat.
+    Return an inline keyboard prompting user to join required channel.
     """
-    return [
+    return InlineKeyboardMarkup(
         [
-            InlineKeyboardButton(text=strings.get("S_B_8", "YouTube Link"), url="https://youtube.com"),
-            InlineKeyboardButton(text=strings.get("S_B_9", "Support"), url=config.SUPPORT_CHAT)
-        ],
-        [
-            InlineKeyboardButton(text="Channel", url=config.SUPPORT_CHANNEL),
+            [InlineKeyboardButton("Join Channel ✅", url=f"https://t.me/{channel_username}")],
+            [InlineKeyboardButton("Check Again 🔄", callback_data="check_join")]
         ]
-    ]
+    )
 
-
-# ===============================
-# Start panel for groups
-# ===============================
-
-def start_panel(strings: dict) -> list:
+def log_button(log_channel_username: str):
     """
-    Return buttons for /start in groups.
+    Inline button linking to log channel (for admin/owner monitoring).
     """
-    return [
+    return InlineKeyboardMarkup(
         [
-            InlineKeyboardButton(text="Support", url=config.SUPPORT_CHAT),
-            InlineKeyboardButton(text="Channel", url=config.SUPPORT_CHANNEL)
+            [InlineKeyboardButton("View Logs 📊", url=f"https://t.me/{log_channel_username}")]
         ]
-    ]
-
-
-# ===============================
-# Help panel
-# ===============================
-
-def help_pannel(strings: dict) -> InlineKeyboardMarkup:
-    """
-    Return inline keyboard for help command.
-    """
-    keyboard = [
-        [InlineKeyboardButton(text="Commands", callback_data="help_cmd")],
-        [InlineKeyboardButton(text="Support", url=config.SUPPORT_CHAT)],
-    ]
-    return InlineKeyboardMarkup(keyboard)
+    )
