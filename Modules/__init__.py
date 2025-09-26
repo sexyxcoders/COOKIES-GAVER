@@ -1,11 +1,8 @@
-# cookies/__init__.py
-from pyrogram import Client
-from .config import BOT_TOKEN, API_ID, API_HASH
+# TNCxCookies/__init__.py
 
-# Initialize the bot client
-app = Client(
-    "cookies_bot",
-    api_id=API_ID,
-    api_hash=API_HASH,
-    bot_token=BOT_TOKEN,
-)
+"""
+TNCxCookies Package
+------------------
+Main package for YouTubeCookiesBot.
+Imports and initialization can be handled here if needed.
+"""
