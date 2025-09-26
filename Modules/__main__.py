@@ -1,24 +1,41 @@
-# cookies/main.py
-import asyncio
-import importlib
+# TNCxCookies/_main_.py
+
+"""
+Main entry point for the YouTubeCookiesBot.
+Initializes the bot and sets up commands.
+"""
+
+from pyrogram import Client, filters
+from TNCxCookies.utils.default_cookies import get_default_cookie
+from TNCxCookies.plugins.bot import start  # import start plugin commands
+
 import os
-from pyrogram import idle
 
-from . import app  # import your client
+# Bot configuration from environment variables
+API_ID = int(os.getenv("API_ID", "123456"))
+API_HASH = os.getenv("API_HASH", "your_api_hash")
+BOT_TOKEN = os.getenv("BOT_TOKEN", "your_bot_token")
 
-async def init():
-    # Dynamically load all bot plugins in cookies/plugins/bot
-    plugins_path = os.path.join(os.path.dirname(__file__), "plugins/bot")
-    for root, dirs, files in os.walk(plugins_path):
-        for file in files:
-            if file.endswith(".py") and file != "__init__.py":
-                module_name = f"cookies.plugins.bot.{file.replace('.py','')}"
-                importlib.import_module(module_name)
+# Initialize the Pyrogram bot client
+app = Client(
+    "YouTubeCookiesBot",
+    api_id=API_ID,
+    api_hash=API_HASH,
+    bot_token=BOT_TOKEN
+)
 
-    print("Bot plugins loaded.")
-    await app.start()
-    print("Bot started. Press Ctrl+C to stop.")
-    await idle()
+# --- Example: /start command ---
+@app.on_message(filters.command("start"))
+async def start_command(client, message):
+    await start.handle_start(client, message)
 
+# --- Example: /getcookie command ---
+@app.on_message(filters.command("getcookie"))
+async def getcookie_command(client, message):
+    cookie = get_default_cookie()
+    await message.reply_text(f"Here is the default YouTube cookie:\n\n{cookie}")
+
+# Run the bot
 if __name__ == "__main__":
-    asyncio.run(init())
+    print("YouTubeCookiesBot is running...")
+    app.run()
