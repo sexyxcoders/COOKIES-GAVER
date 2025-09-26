@@ -1,6 +1,10 @@
-# plugins/__init__.py
+# TNCxCookies/plugins/__init__.py
 
-# This file marks the plugins folder as a Python package.
-# You can optionally initialize variables or import common functions here.
+"""
+Plugins package for TNCxCookies bot.
+This file allows importing bot and sudo plugins easily.
+"""
 
-__all__ = ["bot", "sudo"]
+# Import sub-packages (optional, for convenience)
+from . import bot
+from . import sudo
