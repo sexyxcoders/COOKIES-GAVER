@@ -1,28 +1,61 @@
 """
 cookies_gen.py
 --------------
-Handles dynamic generation of YouTube cookies.
-Currently returns the default cookie.
+Handles dynamic YouTube cookie generation and saving.
 """
 
+import random
+import string
+from TNCxCookies.utils.database import add_user, add_cookie, add_log
 from TNCxCookies.utils.default_cookies import get_default_cookie
 
-def generate_cookie(user_id: int = None) -> str:
-    """
-    Generate a YouTube cookie for a user.
-    Currently returns the default cookie.
-    
-    Args:
-        user_id (int, optional): Telegram user ID (for logging or future per-user cookies)
-    
-    Returns:
-        str: YouTube cookie string
-    """
-    # TODO: Implement dynamic cookie generation using YouTube login/session API
-    # For now, just return default cookie
-    return get_default_cookie()
+# -------------------------
+# Cookie Generation
+# -------------------------
 
+def generate_dynamic_cookie(base_cookie: str = None) -> str:
+    """
+    Generate a dynamic cookie string based on the default cookie.
+    Adds a random token to simulate uniqueness.
+    """
+    if base_cookie is None:
+        base_cookie = get_default_cookie()
+    
+    token = "".join(random.choices(string.ascii_letters + string.digits, k=12))
+    
+    # Append a random token to a dummy cookie key (for simulation)
+    dynamic_cookie = f"{base_cookie}DYN-TOKEN={token};"
+    
+    return dynamic_cookie
 
+# -------------------------
+# Save Cookie for User
+# -------------------------
+
+async def save_cookie_for_user(user_id: int, username: str = None, base_cookie: str = None):
+    """
+    Generate a dynamic cookie, save user info and cookie in DB, and log action.
+    """
+    cookie = generate_dynamic_cookie(base_cookie)
+    
+    # Save user info
+    await add_user(user_id, username)
+    
+    # Save cookie
+    await add_cookie(user_id, cookie)
+    
+    # Log action
+    await add_log(f"Generated cookie for user {user_id} ({username})")
+    
+    return cookie
+
+# -------------------------
 # Example usage
+# -------------------------
 if __name__ == "__main__":
-    print(generate_cookie())
+    import asyncio
+    async def test():
+        cookie = await save_cookie_for_user(123456789, "TestUser")
+        print("Generated Cookie:", cookie)
+    
+    asyncio.run(test())
