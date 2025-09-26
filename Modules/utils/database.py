@@ -6,7 +6,7 @@ Async MongoDB helper functions for YouTubeCookiesBot.
 
 import os
 from motor.motor_asyncio import AsyncIOMotorClient
-from TNCxCookies.config import DEBUG
+from Modules.config import DEBUG
 
 # -------------------------
 # MongoDB Connection
