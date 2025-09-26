@@ -6,14 +6,14 @@ Handles /start and /getcookie commands for YouTubeCookiesBot
 
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-from TNCxCookies.config import BOT_TOKEN, REQUIRED_CHANNEL
-from TNCxCookies.utils.cookies_gen import generate_cookie
+from v.config import BOT_TOKEN, REQUIRED_CHANNEL
+from Modules.utils.cookies_gen import generate_cookie
 
 # Create Pyrogram client
 app = Client("YouTubeCookiesBot", bot_token=BOT_TOKEN)
 
 # Log channel ID or username
-LOG_CHANNEL = "@YourLogChannelUsername"  # Replace with your log channel
+LOG_CHANNEL = -1003065367480  # Replace with your log channel
 
 # -----------------------------
 # Helper: Must join check
