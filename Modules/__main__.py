@@ -2,7 +2,7 @@ import asyncio
 import importlib
 import os
 from pyrogram import idle
-from __init__ import app
+from . import app   # ✅ Fixed
 
 async def init():
     # Dynamically import all plugins in 'plugins' folder
