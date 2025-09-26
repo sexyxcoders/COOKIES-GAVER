@@ -1,73 +1,67 @@
-# utils/database.py
+"""
+database.py
+-----------
+Async MongoDB helper functions for YouTubeCookiesBot.
+"""
 
+import os
 from motor.motor_asyncio import AsyncIOMotorClient
-from cookies import config
+from TNCxCookies.config import DEBUG
 
-# Initialize MongoDB client
-mongo_client = AsyncIOMotorClient(config.MONGO_DB_URI)
-db = mongo_client["youtube_cookies_bot"]  # Database name
-users_collection = db["served_users"]
-chats_collection = db["served_chats"]
-cookies_collection = db["cookies_log"]
+# -------------------------
+# MongoDB Connection
+# -------------------------
+MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
+DB_NAME = os.getenv("DB_NAME", "YouTubeCookiesBot")
 
+client = AsyncIOMotorClient(MONGO_URI)
+db = client[DB_NAME]
 
-# ===============================
-# User / chat logging
-# ===============================
+# -------------------------
+# Collections
+# -------------------------
+users_collection = db.get_collection("users")          # store user info
+cookies_collection = db.get_collection("cookies")      # store generated cookies
+logs_collection = db.get_collection("logs")            # store bot logs
 
-async def add_served_user(user_id: int):
-    """
-    Log a user as served in the database.
-    """
-    await users_collection.update_one(
-        {"user_id": user_id},
-        {"$set": {"user_id": user_id}},
-        upsert=True
-    )
+# -------------------------
+# Async helper functions
+# -------------------------
 
-
-async def add_served_chat(chat_id: int):
-    """
-    Log a group chat as served in the database.
-    """
-    await chats_collection.update_one(
-        {"chat_id": chat_id},
-        {"$set": {"chat_id": chat_id}},
-        upsert=True
-    )
-
-
-# ===============================
-# Cookies logging
-# ===============================
-
-async def log_cookie_sent(user_id: int, cookie_file: str):
-    """
-    Optional: Log that a cookie file was sent to a user.
-    """
-    await cookies_collection.insert_one(
-        {
+async def add_user(user_id: int, username: str = None):
+    """Add a user to the database if not exists."""
+    user = await users_collection.find_one({"user_id": user_id})
+    if not user:
+        await users_collection.insert_one({
             "user_id": user_id,
-            "cookie_file": cookie_file,
-            "timestamp": int(time.time())
-        }
-    )
+            "username": username,
+        })
+        if DEBUG:
+            print(f"[DB] Added user {user_id} ({username})")
 
+async def add_cookie(user_id: int, cookie: str):
+    """Save generated cookie linked to a user."""
+    await cookies_collection.insert_one({
+        "user_id": user_id,
+        "cookie": cookie,
+    })
+    if DEBUG:
+        print(f"[DB] Saved cookie for user {user_id}")
 
-# ===============================
-# Blacklist / checks (optional)
-# ===============================
+async def add_log(message: str):
+    """Save bot log message."""
+    await logs_collection.insert_one({
+        "message": message,
+    })
+    if DEBUG:
+        print(f"[DB] Log: {message}")
 
-async def blacklisted_users():
-    """
-    Return a list of banned user IDs.
-    """
-    return [u["user_id"] async for u in users_collection.find({"banned": True})]
+async def get_user_cookies(user_id: int):
+    """Retrieve all cookies for a given user."""
+    cursor = cookies_collection.find({"user_id": user_id})
+    return [doc async for doc in cursor]
 
-
-async def is_banned_user(user_id: int) -> bool:
-    """
-    Check if a user is banned.
-    """
-    user = await users_collection.find_one({"user_id": user_id, "banned": True})
-    return bool(user)
+async def get_all_users():
+    """Retrieve all users."""
+    cursor = users_collection.find()
+    return [doc async for doc in cursor]
