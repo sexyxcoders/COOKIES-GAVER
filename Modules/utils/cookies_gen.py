@@ -6,8 +6,8 @@ Handles dynamic YouTube cookie generation and saving.
 
 import random
 import string
-from TNCxCookies.utils.database import add_user, add_cookie, add_log
-from TNCxCookies.utils.default_cookies import get_default_cookie
+from Modules.utils.database import add_user, add_cookie, add_log
+from Modules.utils.default_cookies import get_default_cookie
 
 # -------------------------
 # Cookie Generation
