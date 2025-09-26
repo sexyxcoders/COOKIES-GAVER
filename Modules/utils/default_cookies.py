@@ -1,27 +1,29 @@
 """
 default_cookies.py
 ------------------
-Provides the default YouTube cookies for the bot.
+Provides the default YouTube cookies for the bot by reading
+the cookies/default_cookies.txt file.
 """
 
-# Full default cookie string (paste your exported cookie here)
-DEFAULT_COOKIE = (
-    "VISITOR_PRIVACY_METADATA=CgJJThIEGgAgaQ%3D%3D;"
-    "YTSESSION-1b=ANPz9KjCHwlUe+8y8lwj6qnyppMU2doKhLifGQ7Rp4tsx1sfOVWeBW0lvEYOGFjFwPediNuN7TSfX3T4+Yikxn0B+eq/XzMhgHCunHg=;"
-    "__Secure-3PSID=g.a0001QjP64aRY_enMT7c-jsEnHdIA8-LovHTEMr8BLYLkqy9YLc49smXvBTHEqsEVFhTC4BWyQACgYKAdQSARUSFQHGX2MiJpnxBjIGbnlyfqPn2wGWyhoVAUF8yKoPYt_e0wQ53N25KSOn5FB30076;"
-    "GPS=1;"
-    "__Secure-1PSIDTS=sidts-CjQB5H03P4TVZx1R5JkN2l_uDc4g3VHbuFUxDrDhmrk0srns8bbHks-Fq_s4bkp9gwqMzXXXEAA;"
-    "__Secure-3PAPISID=OIIj0e9729kuzfM5/AHmjz_KVk6cM6bMk8;"
-    "__Secure-3PSIDCC=AKEyXzWMhydb3xF-yf1SkTgB2FawcYOQxilyk20TM7z3ZGhcj68rPxc8N1tPy_g62B_WH5gBDg;"
-    "PREF=tz=Asia.Kolkata;"
-    "VISITOR_INFO1_LIVE=grjVFPt4zD8;"
-)
+import os
+
+# Path to the default_cookies.txt file
+COOKIE_FILE = os.path.join(os.path.dirname(__file__), '../../cookies/default_cookies.txt')
 
 def get_default_cookie() -> str:
     """
-    Returns the full default YouTube cookie string.
+    Reads and returns the default YouTube cookie string from the text file.
     """
-    return DEFAULT_COOKIE
+    try:
+        with open(COOKIE_FILE, 'r', encoding='utf-8') as f:
+            cookie = f.read().strip()
+            if not cookie:
+                raise ValueError("default_cookies.txt is empty!")
+            return cookie
+    except FileNotFoundError:
+        raise FileNotFoundError(f"{COOKIE_FILE} not found. Please create it with your default cookie string.")
+    except Exception as e:
+        raise RuntimeError(f"Failed to read default cookie: {e}")
 
 
 # Example usage
