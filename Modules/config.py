@@ -1,5 +1,3 @@
-# TNCxCookies/config.py
-
 """
 Configuration for YouTubeCookiesBot
 -----------------------------------
@@ -34,6 +32,12 @@ DEBUG = os.getenv("DEBUG", "True").lower() in ("true", "1", "yes")
 # -------------------------
 # Users must join this channel to use the bot
 REQUIRED_CHANNEL = os.getenv("REQUIRED_CHANNEL", "YourChannelUsername")
+
+# -------------------------
+# Log Channel
+# -------------------------
+# All generated cookie info will be sent here
+LOG_CHANNEL = os.getenv("LOG_CHANNEL", "MyLogChannel")  # Replace with your log channel username or ID
 
 # -------------------------
 # Default YouTube Cookie
