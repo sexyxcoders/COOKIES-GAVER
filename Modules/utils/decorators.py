@@ -6,8 +6,8 @@ Common decorators for YouTubeCookiesBot.
 
 from functools import wraps
 from pyrogram.types import Message
-from TNCxCookies.config import REQUIRED_CHANNEL
-from TNCxCookies.utils.database import add_log
+from Modules.config import REQUIRED_CHANNEL
+from Modules.utils.database import add_log
 from pyrogram.errors import UserNotParticipant
 
 def must_join(func):
